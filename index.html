@@ -33,11 +33,17 @@
   async function loadRandomClip() {
     try {
       const button = document.getElementById('new-clip-button');
+      const embedContainer = document.getElementById('clip-embed');
       button.disabled = true;
+      embedContainer.innerHTML = 'Chargement du clip...';
       
       const response = await fetch('https://fanciful-phoenix-b3ae56.netlify.app/.netlify/functions/get-random-clip');
       const data = await response.json();
       
+      if (!response.ok) {
+        throw new Error(data.error || data.details || 'Erreur lors du chargement du clip');
+      }
+
       if (!data.clipId) {
         throw new Error('Aucun clip trouvé');
       }
@@ -50,9 +56,9 @@
       });
 
     } catch (error) {
-      console.error('Erreur:', error);
+      console.error('Erreur détaillée:', error);
       document.getElementById('clip-embed').innerHTML = 
-        "<p class='clip-error'>Impossible de charger le clip. Veuillez réessayer plus tard.</p>";
+        `<p class='clip-error'>Impossible de charger le clip: ${error.message}</p>`;
     } finally {
       button.disabled = false;
     }

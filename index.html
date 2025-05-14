@@ -20,6 +20,63 @@
     Chargement de la dernière critique...
   </div>
 </div>
+<div id="twitch-clip-container">
+  <iframe
+    id="twitch-clip"
+    src=""
+    height="400"
+    width="100%"
+    frameborder="0"
+    scrolling="no"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<script>
+  const clientId = "c8efygungvl2snfh674nozt6wtp1jb";
+  const accessToken = "1lk9g379i82x1qousu3ui80hlsks0e";
+
+  async function loadRandomClip() {
+    try {
+      // Étape 1 : Obtenir l'ID de la chaîne
+      const userRes = await fetch(`https://api.twitch.tv/helix/users?login=mventoline`, {
+        headers: {
+          'Client-ID': clientId,
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      const userData = await userRes.json();
+      const userId = userData.data[0].id;
+
+      // Étape 2 : Récupérer les clips de la chaîne
+      const clipRes = await fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=${userId}&first=20`, {
+        headers: {
+          'Client-ID': clientId,
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      const clipData = await clipRes.json();
+
+      if (clipData.data.length === 0) {
+        document.getElementById('twitch-clip-container').innerHTML = "Aucun clip trouvé.";
+        return;
+      }
+
+      // Étape 3 : Sélection aléatoire
+      const randomClip = clipData.data[Math.floor(Math.random() * clipData.data.length)];
+      const clipURL = `https://clips.twitch.tv/embed?clip=${randomClip.id}&parent=mventoline.github.io`;
+
+      // Étape 4 : Affichage
+      document.getElementById("twitch-clip").src = clipURL;
+
+    } catch (err) {
+      console.error("Erreur lors du chargement du clip :", err);
+      document.getElementById('twitch-clip-container').innerHTML = "Erreur lors du chargement du clip.";
+    }
+  }
+
+  loadRandomClip();
+</script>
 
 
     <footer>© <span id="year"></span> <span id="footer-name"></span></footer>

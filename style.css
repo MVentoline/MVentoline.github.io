@@ -165,7 +165,7 @@ p {
   margin: 0;
 }
 
-/* Texte à droite de l’image */
+/* Texte à droite de l'image */
 #letterboxd-review .review-text {
   flex: 1;
   min-width: 200px;
@@ -213,4 +213,59 @@ footer {
   margin-top: 50px;
   font-size: 0.9em;
   color: #666;
+}
+
+/* Style pour la section des clips Twitch */
+#twitch-clip-container {
+  background-color: #121212;
+  border: 1px solid #2c2c2c;
+  padding: 20px;
+  margin-top: 40px;
+  border-radius: 12px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#twitch-clip-container h2 {
+  color: white;
+  margin-bottom: 20px;
+  font-size: 1.3em;
+  text-align: center;
+}
+
+#twitch-clip {
+  border-radius: 8px;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background-color: #0d0d0d;
+}
+
+.clip-controls {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.clip-controls button {
+  background-color: #9146FF;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.clip-controls button:hover {
+  background-color: #7a3dd3;
+}
+
+/* Message d'erreur pour les clips */
+.clip-error {
+  color: #ff4444;
+  padding: 20px;
+  text-align: center;
+  font-style: italic;
 }

@@ -32,15 +32,31 @@ fetch("https://api.rss2json.com/v1/api.json?rss_url=https://letterboxd.com/Vento
     }
 
     const latestReview = data.items[0];
-    reviewContainer.innerHTML = `
-      <strong>${latestReview.title}</strong><br>
-      <a href="${latestReview.link}" target="_blank">Voir la critique sur Letterboxd</a><br>
-      <p>${latestReview.description}</p>
-      <em>Publié le ${new Date(latestReview.pubDate).toLocaleDateString()}</em>
-    `;
+
+// Crée un conteneur temporaire pour modifier le HTML de la description
+const tempDiv = document.createElement("div");
+tempDiv.innerHTML = latestReview.description;
+
+// Sélectionne toutes les images dans la description et applique des styles
+const images = tempDiv.querySelectorAll("img");
+images.forEach(img => {
+  img.style.maxWidth = "100%";  // Ou "300px" si tu veux une taille fixe
+  img.style.height = "auto";
+  img.style.borderRadius = "8px"; // Optionnel
+  img.style.display = "block";
+  img.style.margin = "0 auto";   // Pour centrer l'image
+});
+
+// Injecte le contenu dans le conteneur HTML
+reviewContainer.innerHTML = 
+  <strong>${latestReview.title}</strong><br>
+  <a href="${latestReview.link}" target="_blank">Voir la critique sur Letterboxd</a><br>
+  ${tempDiv.innerHTML}
+  <em>Publié le ${new Date(latestReview.pubDate).toLocaleDateString()}</em>
+;
+
   })
   .catch(error => {
     console.error("Erreur lors du chargement de la critique :", error);
     document.getElementById("letterboxd-review").textContent = "Impossible de charger la critique.";
   });
-

@@ -123,12 +123,8 @@ p {
   color: white;
 }
 /* Mise en page de la critique Letterboxd avec image à gauche et texte à droite */
-#letterboxd-review {
-  display: flex;
-  flex-direction: row;
-  gap: 20px;
-  align-items: flex-start;
-  flex-wrap: wrap; /* Permet le passage vertical sur petits écrans */
+/* Conteneur général */
+.letterboxd-review {
   background-color: #121212;
   border: 1px solid #2c2c2c;
   padding: 20px;
@@ -138,10 +134,28 @@ p {
   margin-left: auto;
   margin-right: auto;
   color: #9ee493;
-  text-align: left; /* pour le texte à droite */
+  text-align: left;
 }
 
-/* Image dans la review Letterboxd */
+/* Titre */
+.letterboxd-review h2 {
+  width: 100%;
+  color: white;
+  margin-bottom: 20px;
+  font-size: 1.3em;
+  text-align: center;
+}
+
+/* Contenu dynamique (injecté par JS) */
+#letterboxd-review {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap; /* Responsive */
+}
+
+/* Image */
 #letterboxd-review img {
   width: 150px;
   height: auto;
@@ -151,13 +165,13 @@ p {
   margin: 0;
 }
 
-/* Contenu texte à droite de l'image */
+/* Texte à droite de l’image */
 #letterboxd-review .review-text {
   flex: 1;
   min-width: 200px;
 }
 
-/* Titre et liens Letterboxd */
+/* Titre critique et lien */
 #letterboxd-review strong {
   font-size: 1.1em;
   color: #ffffff;
@@ -173,18 +187,19 @@ p {
   text-decoration: underline;
 }
 
-/* Texte de description */
+/* Paragraphe */
 #letterboxd-review p {
   font-size: 0.95em;
   color: #ccc;
   margin: 10px 0;
 }
 
-/* Date de publication */
+/* Date */
 #letterboxd-review em {
   font-size: 0.85em;
   color: #888;
 }
+
 
 
 /* Pied de page */

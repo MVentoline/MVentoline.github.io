@@ -47,13 +47,31 @@ images.forEach(img => {
   img.style.margin = "0 auto";   // Pour centrer l'image
 });
 
-// Injecte le contenu dans le conteneur HTML
-reviewContainer.innerHTML = 
-  <strong>${latestReview.title}</strong><br>
-  <a href="${latestReview.link}" target="_blank">Voir la critique sur Letterboxd</a><br>
-  ${tempDiv.innerHTML}
-  <em>Publié le ${new Date(latestReview.pubDate).toLocaleDateString()}</em>
-;
+// Trouve la première image et la sépare
+const img = tempDiv.querySelector("img");
+const imgHTML = img ? `<img src="${img.src}" alt="Affiche du film">` : "";
+
+// Supprime l'image du contenu textuel
+if (img) {
+  img.remove();
+}
+
+// Structure texte dans un conteneur séparé
+const textHTML = `
+  <div class="review-text">
+    <strong>${latestReview.title}</strong><br>
+    <a href="${latestReview.link}" target="_blank">Voir la critique sur Letterboxd</a><br>
+    ${tempDiv.innerHTML}
+    <em>Publié le ${new Date(latestReview.pubDate).toLocaleDateString()}</em>
+  </div>
+`;
+
+// Injecte image + texte côte à côte
+reviewContainer.innerHTML = `
+  ${imgHTML}
+  ${textHTML}
+`;
+
 
   })
   .catch(error => {

@@ -22,62 +22,43 @@
 </div>
 <div id="twitch-clip-container">
   <h2>Clip Aléatoire</h2>
-  <iframe
-    id="twitch-clip"
-    src=""
-    frameborder="0"
-    scrolling="no"
-    allowfullscreen>
-  </iframe>
+  <div id="clip-embed"></div>
   <div class="clip-controls">
-    <button onclick="loadRandomClip()">Nouveau clip aléatoire</button>
+    <button onclick="loadRandomClip()" id="new-clip-button">Nouveau clip aléatoire</button>
   </div>
 </div>
 
+<script src="https://embed.twitch.tv/embed/v1.js"></script>
 <script>
-  const clientId = "c8efygungvl2snfh674nozt6wtp1jb";
-  const accessToken = "1lk9g379i82x1qousu3ui80hlsks0e";
-
   async function loadRandomClip() {
     try {
-      // Étape 1 : Obtenir l'ID de la chaîne
-      const userRes = await fetch(`https://api.twitch.tv/helix/users?login=mventoline`, {
-        headers: {
-          'Client-ID': clientId,
-          'Authorization': `Bearer ${accessToken}`
-        }
-      });
-      const userData = await userRes.json();
-      const userId = userData.data[0].id;
-
-      // Étape 2 : Récupérer les clips de la chaîne
-      const clipRes = await fetch(`https://api.twitch.tv/helix/clips?broadcaster_id=${userId}&first=20`, {
-        headers: {
-          'Client-ID': clientId,
-          'Authorization': `Bearer ${accessToken}`
-        }
-      });
-      const clipData = await clipRes.json();
-
-      if (clipData.data.length === 0) {
-        document.getElementById('twitch-clip-container').innerHTML = "Aucun clip trouvé.";
-        return;
+      const button = document.getElementById('new-clip-button');
+      button.disabled = true;
+      
+      const response = await fetch('https://fanciful-phoenix-b3ae56.netlify.app/.netlify/functions/get-random-clip');
+      const data = await response.json();
+      
+      if (!data.clipId) {
+        throw new Error('Aucun clip trouvé');
       }
 
-      // Étape 3 : Sélection aléatoire
-      const randomClip = clipData.data[Math.floor(Math.random() * clipData.data.length)];
-      const clipURL = `https://clips.twitch.tv/embed?clip=${randomClip.id}&parent=mventoline.github.io`;
+      new Twitch.Embed("clip-embed", {
+        width: "100%",
+        height: "100%",
+        clip: data.clipId,
+        parent: ["mventoline.github.io", "fanciful-phoenix-b3ae56.netlify.app"]
+      });
 
-      // Étape 4 : Affichage
-      document.getElementById("twitch-clip").src = clipURL;
-
-    } catch (err) {
-      console.error("Erreur lors du chargement du clip :", err);
-      document.getElementById('twitch-clip-container').innerHTML = "Erreur lors du chargement du clip.";
+    } catch (error) {
+      console.error('Erreur:', error);
+      document.getElementById('clip-embed').innerHTML = 
+        "<p class='clip-error'>Impossible de charger le clip. Veuillez réessayer plus tard.</p>";
+    } finally {
+      button.disabled = false;
     }
   }
 
-  loadRandomClip();
+  window.addEventListener('load', loadRandomClip);
 </script>
 
 

@@ -269,3 +269,16 @@ footer {
   text-align: center;
   font-style: italic;
 }
+
+#clip-embed {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #0d0d0d;
+}
+
+#new-clip-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

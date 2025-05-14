@@ -1,0 +1,201 @@
+/* Style général de la page */
+body {
+  background-color: #0d0d0d;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+/* Conteneur principal */
+.container {
+  padding: 40px 20px;
+}
+
+/* Image de profil */
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #444;
+  margin-bottom: 20px;
+  object-fit: cover;
+}
+
+/* Titre */
+h1 {
+  margin: 0;
+  font-size: 1.8em;
+}
+
+/* Texte de description */
+p {
+  font-size: 1em;
+  color: #cccccc;
+}
+
+/* Style général de la page */
+body {
+  background-color: #0d0d0d;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+/* Conteneur principal */
+.container {
+  padding: 40px 20px;
+}
+
+/* Image de profil */
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid #444;
+  margin-bottom: 20px;
+  object-fit: cover;
+}
+
+/* Titre */
+h1 {
+  margin: 0;
+  font-size: 1.8em;
+}
+
+/* Texte de description */
+p {
+  font-size: 1em;
+  color: #cccccc;
+}
+
+/* Conteneur des boutons */
+.buttons {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Style commun aux boutons */
+.buttons a {
+  padding: 12px;
+  border: 1px solid #666;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #ffffff;
+  transition: background 0.3s, color 0.3s, border-color 0.3s;
+}
+
+/* Effet au survol générique (par défaut) */
+.buttons a:hover {
+  background-color: #1a1a1a;
+}
+
+/* Hover personnalisés */
+
+.buttons a.youtube:hover {
+  background-color: #FF0000;
+  border-color: #FF0000;
+  color: white;
+}
+
+.buttons a.twitch:hover {
+  background-color: #9146FF;
+  border-color: #9146FF;
+  color: white;
+}
+.buttons a.letterboxd:hover {
+  background: #00e054;
+  border-color: #00e054;
+  color: white;
+}
+
+.buttons a.twitter:hover {
+  background-color: #1DA1F2;
+  border-color: #1DA1F2;
+  color: white;
+}
+/* Mise en page de la critique Letterboxd avec image à gauche et texte à droite */
+#letterboxd-review {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: flex-start;
+  flex-wrap: wrap; /* Permet le passage vertical sur petits écrans */
+  background-color: #121212;
+  border: 1px solid #2c2c2c;
+  padding: 20px;
+  margin-top: 40px;
+  border-radius: 12px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #9ee493;
+  text-align: left; /* pour le texte à droite */
+}
+
+/* Image dans la review Letterboxd */
+#letterboxd-review img {
+  width: 150px;
+  height: auto;
+  border-radius: 8px;
+  flex-shrink: 0;
+  display: block;
+  margin: 0;
+}
+
+/* Contenu texte à droite de l'image */
+#letterboxd-review .review-text {
+  flex: 1;
+  min-width: 200px;
+}
+
+/* Titre et liens Letterboxd */
+#letterboxd-review strong {
+  font-size: 1.1em;
+  color: #ffffff;
+}
+
+#letterboxd-review a {
+  color: #9ee493;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#letterboxd-review a:hover {
+  text-decoration: underline;
+}
+
+/* Texte de description */
+#letterboxd-review p {
+  font-size: 0.95em;
+  color: #ccc;
+  margin: 10px 0;
+}
+
+/* Date de publication */
+#letterboxd-review em {
+  font-size: 0.85em;
+  color: #888;
+}
+
+
+/* Pied de page */
+footer {
+  margin-top: 50px;
+  font-size: 0.9em;
+  color: #666;
+}
+/* Pied de page */
+footer {
+  margin-top: 50px;
+  font-size: 0.9em;
+  color: #666;
+}

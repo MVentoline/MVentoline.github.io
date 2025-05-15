@@ -31,7 +31,6 @@
       </div>
     </div>
 
-    <script src="https://embed.twitch.tv/embed/v1.js"></script>
     <script>
       async function loadRandomClip() {
         try {
@@ -54,15 +53,16 @@
             throw new Error('Aucun clip trouvé');
           }
 
-          embedContainer.innerHTML = `
-            <iframe
-              src="https://clips.twitch.tv/embed?clip=${data.clipId}&parent=ventoline-linktree.netlify.app"
-              height="400"
-              width="100%"
-              allowfullscreen
-              preload="auto">
-            </iframe>
-          `;
+          // Créer l'iframe avec le bon domaine parent
+          const iframe = document.createElement('iframe');
+          iframe.src = `https://clips.twitch.tv/embed?clip=${data.clipId}&parent=${window.location.hostname}`;
+          iframe.width = '100%';
+          iframe.height = '400';
+          iframe.setAttribute('allowfullscreen', 'true');
+          
+          // Vider le conteneur et ajouter l'iframe
+          embedContainer.innerHTML = '';
+          embedContainer.appendChild(iframe);
 
         } catch (error) {
           console.error('Erreur détaillée:', error);
@@ -74,7 +74,12 @@
         }
       }
 
-      window.addEventListener('load', loadRandomClip);
+      // Charger le premier clip quand la page est prête
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadRandomClip);
+      } else {
+        loadRandomClip();
+      }
     </script>
 
     <footer>© <span id="year"></span> <span id="footer-name"></span></footer>

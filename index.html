@@ -27,11 +27,24 @@
         <div class="loading-message">Chargement du clip...</div>
       </div>
       <div class="clip-controls">
-        <button onclick="loadRandomClip()" id="new-clip-button">Nouveau clip aléatoire</button>
+        <button id="new-clip-button">Nouveau clip aléatoire</button>
       </div>
     </div>
 
     <script>
+      let clipsData = null;
+
+      async function loadClipsData() {
+        try {
+          const response = await fetch('clips.json');
+          clipsData = await response.json();
+          return clipsData;
+        } catch (error) {
+          console.error('Erreur lors du chargement des clips:', error);
+          throw error;
+        }
+      }
+
       async function loadRandomClip() {
         try {
           const button = document.getElementById('new-clip-button');
@@ -40,28 +53,23 @@
           button.textContent = 'Chargement...';
           embedContainer.innerHTML = '<div class="loading-message">Chargement du clip...</div>';
           
-          console.log('Tentative de récupération du clip...');
-          const response = await fetch('/.netlify/functions/get-random-clip');
-          console.log('Réponse reçue:', response.status, response.statusText);
+          if (!clipsData) {
+            await loadClipsData();
+          }
+
+          if (!clipsData || !clipsData.clips || clipsData.clips.length === 0) {
+            throw new Error('Aucun clip disponible');
+          }
+
+          const randomClip = clipsData.clips[Math.floor(Math.random() * clipsData.clips.length)];
           
-          const data = await response.json();
-          console.log('Données reçues:', data);
-
-          if (!response.ok) {
-            throw new Error(data.details || data.error || `Erreur ${response.status}: ${response.statusText}`);
+          if (!randomClip || !randomClip.id) {
+            throw new Error('Clip invalide');
           }
-
-          if (!data.clipId) {
-            throw new Error('Aucun clip trouvé');
-          }
-
-          console.log('Création de l\'iframe pour le clip:', data.clipId);
-          const currentDomain = window.location.hostname;
-          console.log('Domaine actuel:', currentDomain);
 
           // Créer l'iframe avec le bon domaine parent
           const iframe = document.createElement('iframe');
-          iframe.src = `https://clips.twitch.tv/embed?clip=${data.clipId}&parent=${currentDomain}`;
+          iframe.src = `https://clips.twitch.tv/embed?clip=${randomClip.id}&parent=${window.location.hostname}`;
           iframe.width = '100%';
           iframe.height = '400';
           iframe.setAttribute('allowfullscreen', 'true');
@@ -69,14 +77,6 @@
           // Vider le conteneur et ajouter l'iframe
           embedContainer.innerHTML = '';
           embedContainer.appendChild(iframe);
-
-          // Ajouter le titre du clip si disponible
-          if (data.clipInfo && data.clipInfo.title) {
-            const titleDiv = document.createElement('div');
-            titleDiv.className = 'clip-title';
-            titleDiv.textContent = data.clipInfo.title;
-            embedContainer.appendChild(titleDiv);
-          }
 
         } catch (error) {
           console.error('Erreur détaillée:', error);
@@ -92,12 +92,13 @@
         }
       }
 
-      // Charger le premier clip quand la page est prête
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', loadRandomClip);
-      } else {
+      // Ajouter l'event listener au bouton
+      document.addEventListener('DOMContentLoaded', () => {
+        const button = document.getElementById('new-clip-button');
+        button.addEventListener('click', loadRandomClip);
+        // Charger le premier clip
         loadRandomClip();
-      }
+      });
     </script>
 
     <footer>© <span id="year"></span> <span id="footer-name"></span></footer>

@@ -15,60 +15,73 @@
     <div class="buttons" id="links-container"></div>
 
     <div class="letterboxd-review">
-  <h2>Dernière critique Letterboxd</h2>
-  <div id="letterboxd-review">
-    Chargement de la dernière critique...
-  </div>
-</div>
-<div id="twitch-clip-container">
-  <h2>Clip Aléatoire</h2>
-  <div id="clip-embed"></div>
-  <div class="clip-controls">
-    <button onclick="loadRandomClip()" id="new-clip-button">Nouveau clip aléatoire</button>
-  </div>
-</div>
+      <h2>Dernière critique Letterboxd</h2>
+      <div id="letterboxd-review">
+        Chargement de la dernière critique...
+      </div>
+    </div>
 
-<script src="https://embed.twitch.tv/embed/v1.js"></script>
-<script>
-  async function loadRandomClip() {
-    try {
-      const button = document.getElementById('new-clip-button');
-      const embedContainer = document.getElementById('clip-embed');
-      button.disabled = true;
-      embedContainer.innerHTML = 'Chargement du clip...';
-      
-      const response = await fetch('/.netlify/functions/get-random-clip');
-      
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data.error || data.details || `Erreur ${response.status}: ${response.statusText}`);
+    <div id="twitch-clip-container">
+      <h2>Clip Aléatoire</h2>
+      <div id="clip-embed" class="clip-container">
+        <div class="loading-message">Chargement du clip...</div>
+      </div>
+      <div class="clip-controls">
+        <button onclick="loadRandomClip()" id="new-clip-button">Nouveau clip aléatoire</button>
+      </div>
+    </div>
+
+    <script src="https://embed.twitch.tv/embed/v1.js"></script>
+    <script>
+      async function loadRandomClip() {
+        try {
+          const button = document.getElementById('new-clip-button');
+          const embedContainer = document.getElementById('clip-embed');
+          button.disabled = true;
+          button.textContent = 'Chargement...';
+          embedContainer.innerHTML = '<div class="loading-message">Chargement du clip...</div>';
+          
+          const response = await fetch('/.netlify/functions/get-random-clip');
+          
+          if (!response.ok) {
+            const data = await response.json().catch(() => ({}));
+            throw new Error(data.error || data.details || `Erreur ${response.status}: ${response.statusText}`);
+          }
+
+          const data = await response.json();
+
+          if (!data.clipId) {
+            throw new Error('Aucun clip trouvé');
+          }
+
+          embedContainer.innerHTML = ''; // Nettoyer le conteneur avant d'ajouter l'embed
+          new Twitch.Embed("clip-embed", {
+            width: "100%",
+            height: "100%",
+            clip: data.clipId,
+            parent: ["ventoline-linktree.netlify.app"]
+          });
+
+        } catch (error) {
+          console.error('Erreur détaillée:', error);
+          document.getElementById('clip-embed').innerHTML = 
+            `<p class='clip-error'>Impossible de charger le clip: ${error.message}</p>`;
+        } finally {
+          button.disabled = false;
+          button.textContent = 'Nouveau clip aléatoire';
+        }
       }
 
-      const data = await response.json();
-
-      if (!data.clipId) {
-        throw new Error('Aucun clip trouvé');
-      }
-
-      new Twitch.Embed("clip-embed", {
-        width: "100%",
-        height: "100%",
-        clip: data.clipId,
-        parent: [window.location.hostname]
+      // Attendre que Twitch soit chargé avant de charger le premier clip
+      window.addEventListener('load', () => {
+        if (window.Twitch) {
+          loadRandomClip();
+        } else {
+          document.getElementById('clip-embed').innerHTML = 
+            "<p class='clip-error'>Erreur de chargement de l'API Twitch</p>";
+        }
       });
-
-    } catch (error) {
-      console.error('Erreur détaillée:', error);
-      document.getElementById('clip-embed').innerHTML = 
-        `<p class='clip-error'>Impossible de charger le clip: ${error.message}</p>`;
-    } finally {
-      button.disabled = false;
-    }
-  }
-
-  window.addEventListener('load', loadRandomClip);
-</script>
-
+    </script>
 
     <footer>© <span id="year"></span> <span id="footer-name"></span></footer>
   </div>

@@ -1,7 +1,6 @@
 [build]
-  functions = "netlify/functions"
   publish = "."
-  command = "# no build command needed"
+  functions = "netlify/functions"
 
 [dev]
   functions = "netlify/functions"
@@ -13,4 +12,9 @@
 [[redirects]]
   from = "/*"
   to = "/index.html"
-  status = 200 
+  status = 200
+
+[[headers]]
+  for = "/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "*" 

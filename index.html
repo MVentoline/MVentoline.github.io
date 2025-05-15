@@ -27,61 +27,66 @@
         <div class="loading-message">Chargement du clip...</div>
       </div>
       <div class="clip-controls">
-        <button onclick="loadRandomClip()" id="new-clip-button" class="clip-button">Nouveau clip aléatoire</button>
+        <button onclick="loadNewClip()" id="new-clip-button" class="clip-button">Nouveau clip aléatoire</button>
       </div>
     </div>
 
     <script>
       let currentClipId = null;
 
-      async function loadRandomClip() {
-        try {
-          const button = document.getElementById('new-clip-button');
-          const embedContainer = document.getElementById('clip-embed');
-          button.disabled = true;
-          button.textContent = 'Chargement...';
-          embedContainer.innerHTML = '<div class="loading-message">Chargement du clip...</div>';
-          
-          const response = await fetch('clips.json');
-          const data = await response.json();
-          
-          if (!data.clips || data.clips.length === 0) {
-            throw new Error('Aucun clip disponible');
-          }
+      function loadNewClip() {
+        const button = document.getElementById('new-clip-button');
+        const embedContainer = document.getElementById('clip-embed');
+        
+        // Désactiver le bouton et montrer le chargement
+        button.disabled = true;
+        button.textContent = 'Chargement...';
+        embedContainer.innerHTML = '<div class="loading-message">Chargement du clip...</div>';
 
-          // Sélectionner un clip aléatoire différent du clip actuel
-          let randomClip;
-          do {
-            randomClip = data.clips[Math.floor(Math.random() * data.clips.length)];
-          } while (data.clips.length > 1 && randomClip.id === currentClipId);
-          
-          currentClipId = randomClip.id;
+        // Charger les clips
+        fetch('clips.json')
+          .then(response => response.json())
+          .then(data => {
+            if (!data.clips || data.clips.length === 0) {
+              throw new Error('Aucun clip disponible');
+            }
 
-          const iframe = document.createElement('iframe');
-          iframe.src = `https://clips.twitch.tv/embed?clip=${randomClip.id}&parent=${window.location.hostname}`;
-          iframe.width = '100%';
-          iframe.height = '100%';
-          iframe.setAttribute('allowfullscreen', 'true');
-          
-          embedContainer.innerHTML = '';
-          embedContainer.appendChild(iframe);
+            // Sélectionner un clip aléatoire différent du clip actuel
+            let randomClip;
+            do {
+              randomClip = data.clips[Math.floor(Math.random() * data.clips.length)];
+            } while (data.clips.length > 1 && randomClip.id === currentClipId);
 
-        } catch (error) {
-          console.error('Erreur détaillée:', error);
-          document.getElementById('clip-embed').innerHTML = 
-            `<div class='clip-error'>
-              <p>Impossible de charger le clip:</p>
-              <p>${error.message}</p>
-              <small>Si l'erreur persiste, veuillez réessayer plus tard.</small>
-            </div>`;
-        } finally {
-          button.disabled = false;
-          button.textContent = 'Nouveau clip aléatoire';
-        }
+            currentClipId = randomClip.id;
+
+            // Créer et ajouter l'iframe
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://clips.twitch.tv/embed?clip=${randomClip.id}&parent=${window.location.hostname}`;
+            iframe.width = '100%';
+            iframe.height = '100%';
+            iframe.setAttribute('allowfullscreen', 'true');
+
+            embedContainer.innerHTML = '';
+            embedContainer.appendChild(iframe);
+          })
+          .catch(error => {
+            console.error('Erreur:', error);
+            embedContainer.innerHTML = `
+              <div class="clip-error">
+                <p>Impossible de charger le clip:</p>
+                <p>${error.message}</p>
+                <small>Si l'erreur persiste, veuillez réessayer plus tard.</small>
+              </div>`;
+          })
+          .finally(() => {
+            // Réactiver le bouton
+            button.disabled = false;
+            button.textContent = 'Nouveau clip aléatoire';
+          });
       }
 
       // Charger le premier clip quand la page est prête
-      document.addEventListener('DOMContentLoaded', loadRandomClip);
+      document.addEventListener('DOMContentLoaded', loadNewClip);
     </script>
 
     <footer>© <span id="year"></span> <span id="footer-name"></span></footer>

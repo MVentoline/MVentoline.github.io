@@ -1,16 +1,22 @@
+/* Import de la police */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 /* Style général de la page */
 body {
   background-color: #0d0d0d;
   color: #ffffff;
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', sans-serif;
   text-align: center;
   margin: 0;
   padding: 0;
+  line-height: 1.5;
 }
 
 /* Conteneur principal */
 .container {
   padding: 40px 20px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 /* Image de profil */
@@ -23,53 +29,27 @@ body {
   object-fit: cover;
 }
 
-/* Titre */
+/* Titres */
+h1, h2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  margin: 0 0 20px 0;
+}
+
 h1 {
-  margin: 0;
-  font-size: 1.8em;
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.5em;
+  margin-bottom: 1em;
 }
 
 /* Texte de description */
 p {
   font-size: 1em;
   color: #cccccc;
-}
-
-/* Style général de la page */
-body {
-  background-color: #0d0d0d;
-  color: #ffffff;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-}
-
-/* Conteneur principal */
-.container {
-  padding: 40px 20px;
-}
-
-/* Image de profil */
-.avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 3px solid #444;
-  margin-bottom: 20px;
-  object-fit: cover;
-}
-
-/* Titre */
-h1 {
-  margin: 0;
-  font-size: 1.8em;
-}
-
-/* Texte de description */
-p {
-  font-size: 1em;
-  color: #cccccc;
+  font-weight: 400;
 }
 
 /* Conteneur des boutons */
@@ -91,6 +71,8 @@ p {
   text-decoration: none;
   color: #ffffff;
   transition: background 0.3s, color 0.3s, border-color 0.3s;
+  font-weight: 500;
+  font-size: 1em;
 }
 
 /* Effet au survol générique (par défaut) */
@@ -122,6 +104,7 @@ p {
   border-color: #1DA1F2;
   color: white;
 }
+
 /* Mise en page de la critique Letterboxd avec image à gauche et texte à droite */
 /* Conteneur général */
 .letterboxd-review {
@@ -180,7 +163,7 @@ p {
 #letterboxd-review a {
   color: #9ee493;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 #letterboxd-review a:hover {
@@ -196,23 +179,18 @@ p {
 
 /* Date */
 #letterboxd-review em {
-  font-size: 0.85em;
+  font-size: 0.9em;
   color: #888;
+  font-style: normal;
+  font-weight: 400;
 }
-
-
 
 /* Pied de page */
 footer {
   margin-top: 50px;
   font-size: 0.9em;
   color: #666;
-}
-/* Pied de page */
-footer {
-  margin-top: 50px;
-  font-size: 0.9em;
-  color: #666;
+  font-weight: 400;
 }
 
 /* Style pour la section des clips Twitch */
@@ -304,7 +282,8 @@ footer {
 
 .loading-message {
   color: #9146FF;
-  font-size: 1.1em;
+  font-size: 1em;
+  font-weight: 500;
   padding: 20px;
 }
 
@@ -328,12 +307,15 @@ footer {
 .clip-error p {
   margin: 5px 0;
   color: #ff4444;
+  font-weight: 500;
 }
 
 .clip-error small {
   color: #888;
   display: block;
   margin-top: 10px;
+  font-size: 0.9em;
+  font-weight: 400;
 }
 
 .clip-button {
@@ -343,7 +325,8 @@ footer {
   padding: 12px 24px;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 1em;
+  font-family: 'Inter', sans-serif;
   font-weight: 600;
   transition: all 0.3s ease;
   margin-top: 20px;

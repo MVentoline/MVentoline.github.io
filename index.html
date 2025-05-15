@@ -27,23 +27,12 @@
         <div class="loading-message">Chargement du clip...</div>
       </div>
       <div class="clip-controls">
-        <button id="new-clip-button">Nouveau clip aléatoire</button>
+        <button onclick="loadRandomClip()" id="new-clip-button" class="clip-button">Nouveau clip aléatoire</button>
       </div>
     </div>
 
     <script>
-      let clipsData = null;
-
-      async function loadClipsData() {
-        try {
-          const response = await fetch('clips.json');
-          clipsData = await response.json();
-          return clipsData;
-        } catch (error) {
-          console.error('Erreur lors du chargement des clips:', error);
-          throw error;
-        }
-      }
+      let currentClipId = null;
 
       async function loadRandomClip() {
         try {
@@ -53,28 +42,27 @@
           button.textContent = 'Chargement...';
           embedContainer.innerHTML = '<div class="loading-message">Chargement du clip...</div>';
           
-          if (!clipsData) {
-            await loadClipsData();
-          }
-
-          if (!clipsData || !clipsData.clips || clipsData.clips.length === 0) {
+          const response = await fetch('clips.json');
+          const data = await response.json();
+          
+          if (!data.clips || data.clips.length === 0) {
             throw new Error('Aucun clip disponible');
           }
 
-          const randomClip = clipsData.clips[Math.floor(Math.random() * clipsData.clips.length)];
+          // Sélectionner un clip aléatoire différent du clip actuel
+          let randomClip;
+          do {
+            randomClip = data.clips[Math.floor(Math.random() * data.clips.length)];
+          } while (data.clips.length > 1 && randomClip.id === currentClipId);
           
-          if (!randomClip || !randomClip.id) {
-            throw new Error('Clip invalide');
-          }
+          currentClipId = randomClip.id;
 
-          // Créer l'iframe avec le bon domaine parent
           const iframe = document.createElement('iframe');
           iframe.src = `https://clips.twitch.tv/embed?clip=${randomClip.id}&parent=${window.location.hostname}`;
           iframe.width = '100%';
-          iframe.height = '400';
+          iframe.height = '100%';
           iframe.setAttribute('allowfullscreen', 'true');
           
-          // Vider le conteneur et ajouter l'iframe
           embedContainer.innerHTML = '';
           embedContainer.appendChild(iframe);
 
@@ -92,13 +80,8 @@
         }
       }
 
-      // Ajouter l'event listener au bouton
-      document.addEventListener('DOMContentLoaded', () => {
-        const button = document.getElementById('new-clip-button');
-        button.addEventListener('click', loadRandomClip);
-        // Charger le premier clip
-        loadRandomClip();
-      });
+      // Charger le premier clip quand la page est prête
+      document.addEventListener('DOMContentLoaded', loadRandomClip);
     </script>
 
     <footer>© <span id="year"></span> <span id="footer-name"></span></footer>

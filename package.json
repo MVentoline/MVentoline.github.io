@@ -1,0 +1,8 @@
+{
+  "name": "ventoline-linktree",
+  "version": "1.0.0",
+  "description": "Site personnel avec clips Twitch aléatoires",
+  "dependencies": {
+    "node-fetch": "^2.6.9"
+  }
+} 

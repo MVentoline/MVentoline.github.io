@@ -317,3 +317,31 @@ footer {
   border-radius: 4px;
   margin: 10px 0;
 }
+
+.clip-title {
+  margin-top: 10px;
+  padding: 8px;
+  background-color: rgba(145, 70, 255, 0.1);
+  border-radius: 4px;
+  color: #9146FF;
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.clip-error {
+  padding: 15px;
+  background-color: rgba(255, 68, 68, 0.1);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.clip-error p {
+  margin: 5px 0;
+  color: #ff4444;
+}
+
+.clip-error small {
+  color: #888;
+  display: block;
+  margin-top: 10px;
+}

@@ -40,22 +40,28 @@
           button.textContent = 'Chargement...';
           embedContainer.innerHTML = '<div class="loading-message">Chargement du clip...</div>';
           
+          console.log('Tentative de récupération du clip...');
           const response = await fetch('/.netlify/functions/get-random-clip');
+          console.log('Réponse reçue:', response.status, response.statusText);
           
-          if (!response.ok) {
-            const data = await response.json().catch(() => ({}));
-            throw new Error(data.error || data.details || `Erreur ${response.status}: ${response.statusText}`);
-          }
-
           const data = await response.json();
+          console.log('Données reçues:', data);
+
+          if (!response.ok) {
+            throw new Error(data.details || data.error || `Erreur ${response.status}: ${response.statusText}`);
+          }
 
           if (!data.clipId) {
             throw new Error('Aucun clip trouvé');
           }
 
+          console.log('Création de l\'iframe pour le clip:', data.clipId);
+          const currentDomain = window.location.hostname;
+          console.log('Domaine actuel:', currentDomain);
+
           // Créer l'iframe avec le bon domaine parent
           const iframe = document.createElement('iframe');
-          iframe.src = `https://clips.twitch.tv/embed?clip=${data.clipId}&parent=${window.location.hostname}`;
+          iframe.src = `https://clips.twitch.tv/embed?clip=${data.clipId}&parent=${currentDomain}`;
           iframe.width = '100%';
           iframe.height = '400';
           iframe.setAttribute('allowfullscreen', 'true');
@@ -64,10 +70,22 @@
           embedContainer.innerHTML = '';
           embedContainer.appendChild(iframe);
 
+          // Ajouter le titre du clip si disponible
+          if (data.clipInfo && data.clipInfo.title) {
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'clip-title';
+            titleDiv.textContent = data.clipInfo.title;
+            embedContainer.appendChild(titleDiv);
+          }
+
         } catch (error) {
           console.error('Erreur détaillée:', error);
           document.getElementById('clip-embed').innerHTML = 
-            `<p class='clip-error'>Impossible de charger le clip: ${error.message}</p>`;
+            `<div class='clip-error'>
+              <p>Impossible de charger le clip:</p>
+              <p>${error.message}</p>
+              <small>Si l'erreur persiste, veuillez réessayer plus tard.</small>
+            </div>`;
         } finally {
           button.disabled = false;
           button.textContent = 'Nouveau clip aléatoire';

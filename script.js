@@ -44,7 +44,7 @@ fetch("https://api.rss2json.com/v1/api.json?rss_url=https://letterboxd.com/Vento
     }
 
     const latestReview = data.items[0];
-    const maxLength = 300; // Limite de caractères pour l'aperçu
+    const maxLength = 500; // Limite de caractères pour l'aperçu
 
     // Crée un conteneur temporaire pour modifier le HTML de la description
     const tempDiv = document.createElement("div");

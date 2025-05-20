@@ -44,7 +44,7 @@ fetch("https://api.rss2json.com/v1/api.json?rss_url=https://letterboxd.com/Vento
     }
 
     const latestReview = data.items[0];
-    const maxLength = 500; // Limite de caractères pour l'aperçu
+    const maxLength = 500; // Augmentation de la limite de caractères pour correspondre au bot Letterboxd
 
     // Crée un conteneur temporaire pour modifier le HTML de la description
     const tempDiv = document.createElement("div");
@@ -71,13 +71,14 @@ fetch("https://api.rss2json.com/v1/api.json?rss_url=https://letterboxd.com/Vento
 
     // Récupère le texte et le tronque
     const text = tempDiv.innerHTML;
+    const isTruncated = text.length > maxLength;
     const truncatedText = truncateText(text, maxLength);
 
     // Structure texte dans un conteneur séparé
     const textHTML = `
       <div class="review-text">
         <strong>${latestReview.title}</strong><br>
-        <a href="${latestReview.link}" target="_blank">Voir la critique sur Letterboxd</a><br>
+        <a href="${latestReview.link}" target="_blank">${isTruncated ? 'Voir la critique complète sur Letterboxd' : 'Voir la critique sur Letterboxd'}</a><br>
         <div class="review-content">
           <div class="truncated-text">${truncatedText}</div>
         </div>

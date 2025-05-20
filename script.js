@@ -19,10 +19,22 @@ profileData.links.forEach(link => {
 
   linksContainer.appendChild(a);
 });
+
+// Fonction pour tronquer le texte
+function truncateText(text, maxLength) {
+  if (text.length <= maxLength) return text;
+  
+  // Trouver le dernier espace avant maxLength pour couper proprement
+  const truncated = text.substr(0, maxLength);
+  const lastSpace = truncated.lastIndexOf(' ');
+  
+  return truncated.substr(0, lastSpace) + '...';
+}
+
 fetch("https://api.rss2json.com/v1/api.json?rss_url=https://letterboxd.com/Ventoline_Yohan/rss/")
   .then(response => response.json())
   .then(data => {
-    console.log("Données reçues :", data); // 🔍 debug ici
+    console.log("Données reçues :", data);
 
     const reviewContainer = document.getElementById("letterboxd-review");
 
@@ -32,47 +44,52 @@ fetch("https://api.rss2json.com/v1/api.json?rss_url=https://letterboxd.com/Vento
     }
 
     const latestReview = data.items[0];
+    const maxLength = 300; // Limite de caractères pour l'aperçu
 
-// Crée un conteneur temporaire pour modifier le HTML de la description
-const tempDiv = document.createElement("div");
-tempDiv.innerHTML = latestReview.description;
+    // Crée un conteneur temporaire pour modifier le HTML de la description
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = latestReview.description;
 
-// Sélectionne toutes les images dans la description et applique des styles
-const images = tempDiv.querySelectorAll("img");
-images.forEach(img => {
-  img.style.maxWidth = "100%";  // Ou "300px" si tu veux une taille fixe
-  img.style.height = "auto";
-  img.style.borderRadius = "8px"; // Optionnel
-  img.style.display = "block";
-  img.style.margin = "0 auto";   // Pour centrer l'image
-});
+    // Sélectionne toutes les images dans la description et applique des styles
+    const images = tempDiv.querySelectorAll("img");
+    images.forEach(img => {
+      img.style.maxWidth = "100%";
+      img.style.height = "auto";
+      img.style.borderRadius = "8px";
+      img.style.display = "block";
+      img.style.margin = "0 auto";
+    });
 
-// Trouve la première image et la sépare
-const img = tempDiv.querySelector("img");
-const imgHTML = img ? `<img src="${img.src}" alt="Affiche du film">` : "";
+    // Trouve la première image et la sépare
+    const img = tempDiv.querySelector("img");
+    const imgHTML = img ? `<img src="${img.src}" alt="Affiche du film">` : "";
 
-// Supprime l'image du contenu textuel
-if (img) {
-  img.remove();
-}
+    // Supprime l'image du contenu textuel
+    if (img) {
+      img.remove();
+    }
 
-// Structure texte dans un conteneur séparé
-const textHTML = `
-  <div class="review-text">
-    <strong>${latestReview.title}</strong><br>
-    <a href="${latestReview.link}" target="_blank">Voir la critique sur Letterboxd</a><br>
-    ${tempDiv.innerHTML}
-    <em>Publié le ${new Date(latestReview.pubDate).toLocaleDateString()}</em>
-  </div>
-`;
+    // Récupère le texte et le tronque
+    const text = tempDiv.innerHTML;
+    const truncatedText = truncateText(text, maxLength);
 
-// Injecte image + texte côte à côte
-reviewContainer.innerHTML = `
-  ${imgHTML}
-  ${textHTML}
-`;
+    // Structure texte dans un conteneur séparé
+    const textHTML = `
+      <div class="review-text">
+        <strong>${latestReview.title}</strong><br>
+        <a href="${latestReview.link}" target="_blank">Voir la critique sur Letterboxd</a><br>
+        <div class="review-content">
+          <div class="truncated-text">${truncatedText}</div>
+        </div>
+        <em>Publié le ${new Date(latestReview.pubDate).toLocaleDateString()}</em>
+      </div>
+    `;
 
-
+    // Injecte image + texte côte à côte
+    reviewContainer.innerHTML = `
+      ${imgHTML}
+      ${textHTML}
+    `;
   })
   .catch(error => {
     console.error("Erreur lors du chargement de la critique :", error);

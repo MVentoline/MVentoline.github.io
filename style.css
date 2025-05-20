@@ -177,6 +177,18 @@ p {
   margin: 10px 0;
 }
 
+/* Styles pour le texte tronqué */
+.review-content {
+  position: relative;
+  margin: 10px 0;
+}
+
+.truncated-text {
+  color: #ccc;
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
 /* Date */
 #letterboxd-review em {
   font-size: 0.9em;

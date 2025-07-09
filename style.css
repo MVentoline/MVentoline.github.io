@@ -105,6 +105,12 @@ p {
   color: white;
 }
 
+.buttons a.discogs:hover {
+  background-color: #000000;
+  border-color: #000000;
+  color: white;
+}
+
 /* Mise en page de la critique Letterboxd avec image à gauche et texte à droite */
 /* Conteneur général */
 .letterboxd-review {

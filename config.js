@@ -22,6 +22,11 @@ const profileData = {
       label: "Youtube redif live",
       url: "https://www.youtube.com/@Mventoline",
       className: "youtube"
+    },
+    {
+      label: "Discogs",
+      url: "https://www.discogs.com/fr/user/Ventoline_Yohann/collection",
+      className: "discogs"
     }
   ]
 };

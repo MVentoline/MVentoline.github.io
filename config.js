@@ -31,7 +31,7 @@ const profileData = {
     {
       label: "Serializd",
       url: "https://www.serializd.com/user/Ventoline/profile",
-      className: "youtube"
+      className: "serializd"
     }
 
   ]

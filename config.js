@@ -27,6 +27,12 @@ const profileData = {
       label: "Discogs",
       url: "https://www.discogs.com/fr/user/Ventoline_Yohann/collection",
       className: "discogs"
+    },
+    {
+      label: "Serializd",
+      url: "https://www.serializd.com/user/Ventoline/profile",
+      className: "youtube"
     }
+
   ]
 };

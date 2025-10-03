@@ -88,6 +88,12 @@ p {
   color: white;
 }
 
+.buttons a.tiktok:hover {
+  background-color: #00f2ea;
+  border-color: #00f2ea;
+  color: white;
+}
+
 .buttons a.twitch:hover {
   background-color: #9146FF;
   border-color: #9146FF;

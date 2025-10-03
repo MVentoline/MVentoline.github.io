@@ -9,6 +9,11 @@ const profileData = {
       className: "twitch"
     },
     {
+      label: "TikTok",
+      url: "https://www.tiktok.com/@mventoline",
+      className: "tiktok"
+    },  
+    {
       label: "Letterboxd",
       url: "https://letterboxd.com/Ventoline_Yohan/",
       className: "letterboxd"
